@@ -35,8 +35,12 @@ public class RegistrationPage {
         driver.findElement(By.xpath(PASSWORD_INPUT)).sendKeys(password);
     }
     public void waitForElement(WebElement element){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(12));
-        wait.until(ExpectedConditions.visibilityOf(element));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
+    }
+    public void waitForUrl(String url){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        wait.until(ExpectedConditions.urlToBe(url));
     }
     public void confirmRegistration(){
         driver.findElement(By.xpath(REGISTRATION_BUTTON)).click();

@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import ru.yandex.praktikum.AccountPage;
+import ru.yandex.praktikum.MainPage;
 import ru.yandex.praktikum.RegistrationPage;
 
 import static org.junit.Assert.assertEquals;
@@ -25,10 +26,6 @@ public class RegistrationTest {
 
     @After
     public void cleanUp() throws InterruptedException {
-        AccountPage accountPage = new AccountPage(driver);
-        Thread.sleep(5000);
-        accessToken = accountPage.getAuthToken();
-        accountPage.deleteUser(accessToken);
         driver.quit();
     }
 
@@ -38,17 +35,21 @@ public class RegistrationTest {
         registrationPage.open();
 
         registrationPage.fillName("Test");
-        registrationPage.fillEmail("kussdbvhbbdskffvjkj@nscn.dfk");
+        registrationPage.fillEmail("kudsbbvbdtfvkkj@nscn.dfk");
         registrationPage.fillPassword("123456");
         registrationPage.confirmRegistration();
 
-        AccountPage accountPage = new AccountPage(driver);
-        accountPage.waitForElement(driver.findElement(By.xpath(LOGIN_BUTTON)));
-        Thread.sleep(5000);
-        assertEquals("Регистрация не прошла успешно", ACCOUNT_PAGE_URL, accountPage.getPageUrl());
+        registrationPage.waitForUrl(ACCOUNT_PAGE_URL);
+        assertEquals("Регистрация не прошла успешно", ACCOUNT_PAGE_URL, registrationPage.getPageUrl());
 
-        accountPage.fillEmail("knkcnskdkfsdfvjkj@nscn.dfk");
+        AccountPage accountPage = new AccountPage(driver);
+        accountPage.fillEmail("kudsbbvbdtfvkkj@nscn.dfk");
         accountPage.fillPassword("123456");
         accountPage.logIn();
+
+        MainPage page = new MainPage(driver);
+        page.waitForUrl(MainPage.MAIN_PAGE_URL);
+        accessToken = accountPage.getAuthToken();
+        accountPage.deleteUser(accessToken);
     }
 }

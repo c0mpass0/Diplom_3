@@ -16,9 +16,9 @@ import java.time.Duration;
 
 public class MainPage {
     public static final String MAIN_PAGE_URL = "https://stellarburgers.nomoreparties.site/";
-
     public static final String TOP_ACCOUNT_BUTTON = "//a[contains(@href,'account')]";
     public static final String CONSTRUCTOR_BUTTON = ".//li/a[contains(@href='/')]";
+    public static final String MIDDLE_ACCOUNT_BUTTON = "";
 
     private final WebDriver driver;
     public MainPage(WebDriver driver){
@@ -43,6 +43,10 @@ public class MainPage {
     public String getAuthToken(){
         LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
         return localStorage.getItem("accessToken");
+    }
+    public void waitForUrl(String url){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
+        wait.until(ExpectedConditions.urlToBe(url));
     }
 
 }

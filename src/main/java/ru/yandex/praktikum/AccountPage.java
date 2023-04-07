@@ -43,10 +43,14 @@ public class AccountPage {
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(12));
         wait.until(ExpectedConditions.visibilityOf(element));
     }
+    public void waitForUrl(String url){
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(12));
+        wait.until(ExpectedConditions.urlToBe(url));
+    }
     public String getPageUrl(){
         return driver.getCurrentUrl();
     }
-    public String getAuthToken(){
+    public String getAuthToken() throws InterruptedException {
         LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
         System.out.println(localStorage.getItem("accessToken"));
         return localStorage.getItem("accessToken");
