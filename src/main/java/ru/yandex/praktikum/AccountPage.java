@@ -50,7 +50,7 @@ public class AccountPage {
     public String getPageUrl(){
         return driver.getCurrentUrl();
     }
-    public String getAuthToken() throws InterruptedException {
+    public String getAuthToken(){
         LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
         System.out.println(localStorage.getItem("accessToken"));
         return localStorage.getItem("accessToken");

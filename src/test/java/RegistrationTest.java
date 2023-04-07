@@ -1,4 +1,5 @@
 import org.junit.After;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
@@ -25,12 +26,12 @@ public class RegistrationTest {
     }
 
     @After
-    public void cleanUp() throws InterruptedException {
+    public void cleanUp(){
         driver.quit();
     }
 
     @Test
-    public void registrationSuccess() throws InterruptedException {
+    public void registrationSuccess(){
         RegistrationPage registrationPage = new RegistrationPage(driver);
         registrationPage.open();
 
@@ -51,5 +52,18 @@ public class RegistrationTest {
         page.waitForUrl(MainPage.MAIN_PAGE_URL);
         accessToken = accountPage.getAuthToken();
         accountPage.deleteUser(accessToken);
+    }
+
+    @Test
+    public void registrationWithPasswordLessThanSixSymbolsFail(){
+        RegistrationPage registrationPage = new RegistrationPage(driver);
+        registrationPage.open();
+
+        registrationPage.fillName("Test");
+        registrationPage.fillEmail("kudsbbvbdtfvkkj@nscn.dfk");
+        registrationPage.fillPassword("12345");
+        registrationPage.confirmRegistration();
+
+        assertEquals("Сообщение об ошибке не вывелось или не совпало", "Некорректный пароль", driver.findElement(By.xpath(".//p[text()='Некорректный пароль']")).getText());
     }
 }
