@@ -37,7 +37,7 @@ public class AccountPage {
         driver.findElement(By.xpath(LOGIN_BUTTON)).click();
     }
     public void waitForElement(WebElement element){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(12));
-        wait.until(ExpectedConditions.visibilityOf(element));
+        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(5));
+        wait.until(ExpectedConditions.elementToBeClickable(element));
     }
 }

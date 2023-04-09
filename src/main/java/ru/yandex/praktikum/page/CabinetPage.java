@@ -10,6 +10,7 @@ public class CabinetPage {
 
     public static final String CABINET_NAME_INPUT = ".//input[@name='Name']";
     public static final String CABINET_EMAIL_INPUT = ".//input[@name='name']";
+    public static final String LOGOUT_BUTTON = ".//button[text()='Выход']";
     private final WebDriver driver;
     public CabinetPage(WebDriver driver){
         this.driver = driver;
@@ -29,5 +30,9 @@ public class CabinetPage {
 
     public void openMainPage(){
         driver.findElement(By.xpath(BURGER_LOGO)).click();
+    }
+
+    public void logOut(){
+        driver.findElement(By.xpath(LOGOUT_BUTTON)).click();
     }
 }
