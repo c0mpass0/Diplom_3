@@ -16,6 +16,12 @@ import java.time.Duration;
 
 public class MainPage {
     public static final String MIDDLE_CABINET_BUTTON = ".//button[text()='Войти в аккаунт']";
+    public static final String BUN_CONSTRUCTOR_BUTTON = ".//span[text()='Булки']";
+    public static final String SAUCE_CONSTRUCTOR_BUTTON = ".//span[text()='Соусы']";
+    public static final String INGREDIENT_CONSTRUCTOR_BUTTON = ".//span[text()='Начинки']";
+    public static final String SAUCE_CONSTRUCTOR_SELECTED = ".//section[@class='BurgerIngredients_ingredients__1N8v2']/div/div[2][contains(@class, 'current')]";
+    public static final String INGREDIENT_CONSTRUCTOR_SELECTED = ".//section[@class='BurgerIngredients_ingredients__1N8v2']/div/div[3][contains(@class, 'current')]";
+    public static final String BUN_CONSTRUCTOR_SELECTED = ".//section[@class='BurgerIngredients_ingredients__1N8v2']/div/div[1][contains(@class, 'current')]";
     private final WebDriver driver;
     public MainPage(WebDriver driver){
         this.driver = driver;
@@ -26,23 +32,11 @@ public class MainPage {
     public void openCabinetPage(String button){
         driver.findElement(By.xpath(button)).click();
     }
-    public void openConstructorPage(){
-        driver.findElement(By.xpath(CONSTRUCTOR_BUTTON)).click();
-    }
-    public String getPageUrl(){
-        return driver.getCurrentUrl();
-    }
-    public void waitForElement(WebElement element){
-        WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(2));
-        wait.until(ExpectedConditions.visibilityOf(element));
-    }
-    public String getAuthToken(){
-        LocalStorage localStorage = ((WebStorage) driver).getLocalStorage();
-        return localStorage.getItem("accessToken");
-    }
     public void waitForUrl(String url){
         WebDriverWait wait = new WebDriverWait(driver, Duration.ofSeconds(4));
         wait.until(ExpectedConditions.urlToBe(url));
     }
-
+    public void selectConstructorCategory(String category){
+        driver.findElement(By.xpath(category)).click();
+    }
 }

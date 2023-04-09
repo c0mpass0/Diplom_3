@@ -26,10 +26,10 @@ public class CabinetTest {
 
     @Before
     public void setUp(){
-        userClient = new UserClient();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
+        userClient = new UserClient();
     }
     @After
     public void cleanUp(){
