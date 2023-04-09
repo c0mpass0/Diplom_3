@@ -36,6 +36,8 @@ public class MainPageToAccountPageTest {
     public void setUp(){
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
+        //Настройка для тестирования на Яндекс.Браузере
+        //System.setProperty("webdriver.chrome.driver", "C:\\webdriver\\yandexdriver.exe");
         driver = new ChromeDriver(options);
     }
 

@@ -16,6 +16,8 @@ public class ConstructorTest {
     public void setUp(){
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
+        //Настройка для тестирования на Яндекс.Браузере
+        //System.setProperty("webdriver.chrome.driver", "C:\\webdriver\\yandexdriver.exe");
         driver = new ChromeDriver(options);
     }
 
@@ -30,7 +32,7 @@ public class ConstructorTest {
         mainPage.open();
         mainPage.selectConstructorCategory(SAUCE_CONSTRUCTOR_BUTTON);
 
-        assertTrue("Не перешли в раздел конструктора",driver.findElements( By.xpath(SAUCE_CONSTRUCTOR_SELECTED)).size() != 0);
+        assertTrue("Не перешли в раздел конструктора 'Соусы'",driver.findElements( By.xpath(SAUCE_CONSTRUCTOR_SELECTED)).size() != 0);
     }
 
     @Test
@@ -39,7 +41,7 @@ public class ConstructorTest {
         mainPage.open();
         mainPage.selectConstructorCategory(INGREDIENT_CONSTRUCTOR_BUTTON);
 
-        assertTrue("Не перешли в раздел конструктора",driver.findElements( By.xpath(INGREDIENT_CONSTRUCTOR_SELECTED)).size() != 0);
+        assertTrue("Не перешли в раздел конструктора 'Начинки'",driver.findElements( By.xpath(INGREDIENT_CONSTRUCTOR_SELECTED)).size() != 0);
     }
 
     @Test
@@ -49,6 +51,6 @@ public class ConstructorTest {
         mainPage.selectConstructorCategory(INGREDIENT_CONSTRUCTOR_BUTTON);
         mainPage.selectConstructorCategory(BUN_CONSTRUCTOR_BUTTON);
 
-        assertTrue("Не перешли в раздел конструктора",driver.findElements( By.xpath(BUN_CONSTRUCTOR_SELECTED)).size() != 0);
+        assertTrue("Не перешли в раздел конструктора 'Булки'",driver.findElements( By.xpath(BUN_CONSTRUCTOR_SELECTED)).size() != 0);
     }
 }

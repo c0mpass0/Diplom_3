@@ -1,3 +1,4 @@
+import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.WebDriver;
@@ -16,9 +17,14 @@ public class RecoveryPageTest {
     public void setUp(){
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
+        //Настройка для тестирования на Яндекс.Браузере
+        //System.setProperty("webdriver.chrome.driver", "C:\\webdriver\\yandexdriver.exe");
         driver = new ChromeDriver(options);
     }
-
+    @After
+    public void cleanUp(){
+        driver.quit();
+    }
     @Test
     public void returnFromRecoveryToLoginSuccessful(){
         RecoveryPage recoveryPage = new RecoveryPage(driver);

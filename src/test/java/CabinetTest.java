@@ -1,7 +1,6 @@
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -15,26 +14,26 @@ import ru.yandex.praktikum.rest.model.UserGenerator;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
-import static ru.yandex.praktikum.page.AccountPage.EMAIL_INPUT;
 import static ru.yandex.praktikum.src.HeaderElements.TOP_CABINET_BUTTON;
 import static ru.yandex.praktikum.src.UrlList.*;
 
 public class CabinetTest {
     private UserClient userClient;
     private WebDriver driver;
-    private String accessToken;
 
     @Before
     public void setUp(){
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
+        //Настройка для тестирования на Яндекс.Браузере
+        //System.setProperty("webdriver.chrome.driver", "C:\\webdriver\\yandexdriver.exe");
         driver = new ChromeDriver(options);
         userClient = new UserClient();
     }
     @After
     public void cleanUp(){
         CurrentPage currentPage = new CurrentPage(driver);
-        accessToken = currentPage.getAuthToken();
+        String accessToken = currentPage.getAuthToken();
 
         if(accessToken!=null){userClient.delete(accessToken);}
 

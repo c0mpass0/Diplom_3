@@ -20,20 +20,21 @@ import static ru.yandex.praktikum.src.UrlList.ACCOUNT_PAGE_URL;
 public class RegistrationTest {
     private UserClient userClient;
     private WebDriver driver;
-    private String accessToken;
 
     @Before
     public void setUp(){
-        userClient = new UserClient();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
+        //Настройка для тестирования на Яндекс.Браузере
+        //System.setProperty("webdriver.chrome.driver", "C:\\webdriver\\yandexdriver.exe");
         driver = new ChromeDriver(options);
+        userClient = new UserClient();
     }
 
     @After
     public void cleanUp(){
         CurrentPage currentPage = new CurrentPage(driver);
-        accessToken = currentPage.getAuthToken();
+        String accessToken = currentPage.getAuthToken();
 
         if(accessToken!=null){userClient.delete(accessToken);}
 
