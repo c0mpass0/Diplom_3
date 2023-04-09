@@ -1,4 +1,4 @@
-package ru.yandex.praktikum;
+package ru.yandex.praktikum.page;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -8,12 +8,15 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 
+import static ru.yandex.praktikum.src.UrlList.REGISTRATION_PAGE_URL;
+
 public class RegistrationPage {
-    public static final String REGISTRATION_PAGE_URL = "https://stellarburgers.nomoreparties.site/register";
+
     public static final String NAME_INPUT = ".//form[@class='Auth_form__3qKeq mb-20']/fieldset[1]/descendant::input";
     public static final String EMAIL_INPUT = ".//form[@class='Auth_form__3qKeq mb-20']/fieldset[2]/descendant::input";
     public static final String PASSWORD_INPUT = ".//form[@class='Auth_form__3qKeq mb-20']/fieldset[3]/descendant::input";
     public static final String REGISTRATION_BUTTON = ".//form[@class='Auth_form__3qKeq mb-20']/button";
+    public static final String VALIDATION_ERROR = ".//p[text()='Некорректный пароль']";
 
     private final WebDriver driver;
     public RegistrationPage(WebDriver driver){

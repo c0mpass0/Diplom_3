@@ -1,7 +1,5 @@
-package ru.yandex.praktikum;
+package ru.yandex.praktikum.page;
 
-import io.restassured.http.ContentType;
-import io.restassured.response.ValidatableResponse;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
@@ -11,15 +9,13 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import static io.restassured.RestAssured.given;
+import static ru.yandex.praktikum.src.HeaderElements.CONSTRUCTOR_BUTTON;
+import static ru.yandex.praktikum.src.UrlList.MAIN_PAGE_URL;
 
 import java.time.Duration;
 
 public class MainPage {
-    public static final String MAIN_PAGE_URL = "https://stellarburgers.nomoreparties.site/";
-    public static final String TOP_ACCOUNT_BUTTON = "//a[contains(@href,'account')]";
-    public static final String CONSTRUCTOR_BUTTON = ".//li/a[contains(@href='/')]";
-    public static final String MIDDLE_ACCOUNT_BUTTON = "";
-
+    public static final String MIDDLE_CABINET_BUTTON = ".//button[text()='Войти в аккаунт']";
     private final WebDriver driver;
     public MainPage(WebDriver driver){
         this.driver = driver;
@@ -27,8 +23,8 @@ public class MainPage {
     public void open(){
         driver.get(MAIN_PAGE_URL);
     }
-    public void openAccountPage(){
-        driver.findElement(By.xpath(TOP_ACCOUNT_BUTTON)).click();
+    public void openCabinetPage(String button){
+        driver.findElement(By.xpath(button)).click();
     }
     public void openConstructorPage(){
         driver.findElement(By.xpath(CONSTRUCTOR_BUTTON)).click();

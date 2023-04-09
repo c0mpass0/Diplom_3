@@ -1,25 +1,30 @@
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
-import ru.yandex.praktikum.AccountPage;
-import ru.yandex.praktikum.MainPage;
-import ru.yandex.praktikum.RegistrationPage;
+import ru.yandex.praktikum.page.*;
+import ru.yandex.praktikum.rest.client.UserClient;
+import ru.yandex.praktikum.rest.model.User;
+import ru.yandex.praktikum.rest.model.UserGenerator;
+
 
 import static org.junit.Assert.assertEquals;
-import static ru.yandex.praktikum.AccountPage.ACCOUNT_PAGE_URL;
-import static ru.yandex.praktikum.AccountPage.LOGIN_BUTTON;
+import static ru.yandex.praktikum.src.HeaderElements.TOP_CABINET_BUTTON;
+import static ru.yandex.praktikum.src.UrlList.CABINET_PAGE_URL;
+import static ru.yandex.praktikum.page.RegistrationPage.VALIDATION_ERROR;
+import static ru.yandex.praktikum.src.UrlList.ACCOUNT_PAGE_URL;
 
 public class RegistrationTest {
+    private UserClient userClient;
     private WebDriver driver;
     private String accessToken;
 
     @Before
     public void setUp(){
+        userClient = new UserClient();
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--remote-allow-origins=*");
         driver = new ChromeDriver(options);
@@ -27,43 +32,56 @@ public class RegistrationTest {
 
     @After
     public void cleanUp(){
+        CurrentPage currentPage = new CurrentPage(driver);
+        accessToken = currentPage.getAuthToken();
+
+        if(accessToken!=null){userClient.delete(accessToken);}
+
         driver.quit();
     }
 
     @Test
     public void registrationSuccess(){
+        User user = UserGenerator.getRandom();
+
         RegistrationPage registrationPage = new RegistrationPage(driver);
         registrationPage.open();
 
-        registrationPage.fillName("Test");
-        registrationPage.fillEmail("kudsbbvbdtfvkkj@nscn.dfk");
-        registrationPage.fillPassword("123456");
+        registrationPage.fillName(user.getName());
+        registrationPage.fillEmail(user.getEmail());
+        registrationPage.fillPassword(user.getPassword());
         registrationPage.confirmRegistration();
 
         registrationPage.waitForUrl(ACCOUNT_PAGE_URL);
-        assertEquals("Регистрация не прошла успешно", ACCOUNT_PAGE_URL, registrationPage.getPageUrl());
 
         AccountPage accountPage = new AccountPage(driver);
-        accountPage.fillEmail("kudsbbvbdtfvkkj@nscn.dfk");
-        accountPage.fillPassword("123456");
+        accountPage.fillEmail(user.getEmail());
+        accountPage.fillPassword(user.getPassword());
         accountPage.logIn();
 
-        MainPage page = new MainPage(driver);
-        page.waitForUrl(MainPage.MAIN_PAGE_URL);
-        accessToken = accountPage.getAuthToken();
-        accountPage.deleteUser(accessToken);
+        MainPage mainPage = new MainPage(driver);
+        mainPage.openCabinetPage(TOP_CABINET_BUTTON);
+        mainPage.waitForUrl(CABINET_PAGE_URL);
+
+        CabinetPage cabinetPage = new CabinetPage(driver);
+
+        assertEquals("Регистрация не прошла успешно, имя пользователя не совпало", cabinetPage.getCabinetName(), user.getName());
+        assertEquals("Регистрация не прошла успешно, email пользователя не совпал", cabinetPage.getCabinetEmail(), user.getEmail().toLowerCase());
     }
 
     @Test
     public void registrationWithPasswordLessThanSixSymbolsFail(){
+        User user = UserGenerator.getRandom();
+        user.setPassword("12345");
+
         RegistrationPage registrationPage = new RegistrationPage(driver);
         registrationPage.open();
 
-        registrationPage.fillName("Test");
-        registrationPage.fillEmail("kudsbbvbdtfvkkj@nscn.dfk");
-        registrationPage.fillPassword("12345");
+        registrationPage.fillName(user.getName());
+        registrationPage.fillEmail(user.getEmail());
+        registrationPage.fillPassword(user.getPassword());
         registrationPage.confirmRegistration();
 
-        assertEquals("Сообщение об ошибке не вывелось или не совпало", "Некорректный пароль", driver.findElement(By.xpath(".//p[text()='Некорректный пароль']")).getText());
+        assertEquals("Сообщение об ошибке не вывелось или не совпало", "Некорректный пароль", driver.findElement(By.xpath(VALIDATION_ERROR)).getText());
     }
 }
